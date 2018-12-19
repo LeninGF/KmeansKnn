@@ -40,18 +40,18 @@ def main():
     datos = np.loadtxt(open('Mall_Customers2.csv', 'rb'), delimiter=',')
     ejemplos, features = np.shape(datos)
     X = datos
-    kmeans = KMeans(n_clusters=2, random_state=23).fit(X)
+    kmeans = KMeans(n_clusters=4, random_state=23).fit(X)
     print(kmeans.labels_)
     print("Centers, \n", kmeans.cluster_centers_)
     print(np.shape(kmeans.labels_))
-    np.savetxt('labels.csv', kmeans.labels_, delimiter=',')
+    np.savetxt('labels4.csv', kmeans.labels_, delimiter=',')
 
     xtest = generate_data(60,4)
     print(xtest)
     ytest = kmeans.predict(xtest)
     print(ytest)
-    np.savetxt('xtest.csv', xtest, delimiter=',')
-    np.savetxt('ytest.csv', ytest, delimiter=',')
+    np.savetxt('xtest4.csv', xtest, delimiter=',')
+    np.savetxt('ytest4.csv', ytest, delimiter=',')
 if __name__ == '__main__':
     main()
 

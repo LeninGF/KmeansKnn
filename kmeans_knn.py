@@ -15,7 +15,7 @@ from sklearn.metrics import classification_report,confusion_matrix
 def main():
     print ("Welcome to KNN")
     # Leer el fichero de datos
-    datos = np.loadtxt(open('Mall_Customers_Class1.csv', 'rb'), delimiter=',')
+    datos = np.loadtxt(open('Mall_Customers_Class4.csv', 'rb'), delimiter=',')
     ejemplos, features = np.shape(datos)
     x_total = datos[:, 0:features - 1]
     y_total = datos[:, -1]
@@ -25,14 +25,37 @@ def main():
     # print(x_total, '\n*********\n')
     # print(x_train, '\n*********\n')
     # print(y_train)
-    xtest = np.loadtxt(open('xtest.csv', 'rb'), delimiter=',')
-    ytest = np.loadtxt(open('ytest.csv', 'rb'), delimiter=',')
-    knn = KNeighborsClassifier(n_neighbors=2)
+    xtest = np.loadtxt(open('xtest4.csv', 'rb'), delimiter=',')
+    ytest = np.loadtxt(open('ytest4.csv', 'rb'), delimiter=',')
+    knn = KNeighborsClassifier(n_neighbors=5)
     knn.fit(x_train, y_train)
+    ypredtrain = knn.predict(x_train)
+    target_names = ['class 0', 'class 1', 'class2', 'class3']
+    print("Classification Report: \n", classification_report(y_train, ypredtrain, target_names=target_names))
+    cm = confusion_matrix(y_train, ypredtrain)
+    print("Confusion Matrix: \n", cm)
+    P = cm[0, 0] + cm[0, 1]  # Total de Positivos
+    N = cm[1, 0] + cm[1, 1]  # Total de Negativos
+    TP = cm[0, 0]
+    FN = cm[0, 1]
+    FP = cm[1, 0]
+    TN = cm[1, 1]
+    error = (FP + FN) / (P + N)
+    accuracy = (TP + TN) / (P + N)
+    sensitivity = TP / P
+    specificity = TN / N
+
+    print('Error = ', error)
+    print('Accuracy = ', accuracy)
+    print('Sensitivity = ', sensitivity)
+    print('Specificity = ', specificity)
+
+    print("----------------------------")
+
     ypred = knn.predict(xtest)
     # probs = knn.predict_proba(xtest)
     # print("Probability", probs)
-    target_names = ['class 0', 'class 1']
+    target_names = ['class 0', 'class 1','class2', 'class3']
     print("Classification Report: \n", classification_report(ytest, ypred, target_names= target_names))
     cm = confusion_matrix(ytest, ypred)
     print("Confusion Matrix: \n", cm)
